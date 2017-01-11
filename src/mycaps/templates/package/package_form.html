@@ -1,0 +1,58 @@
+<div class='row' style="padding: 100px;">
+<div class='col-sm-6 col-sm-offset-3'>
+<div class="reply"></div>
+<form id="id_package" method='POST' action='' enctype='multipart/form-data'>{% csrf_token %}
+
+
+{{ form.media }}
+<label class="control-label">Color</label>
+{{ form.color }}</br>
+<label class="control-label">Coffee</label>
+{{ form.coffee }}</br>
+<label class="control-label">Description</label>
+{{ form.description }}</br>
+<label class="control-label">Image</label>
+<input type="file" name="image" class="dropify" data-max-file-size="3M" />
+
+
+<input id="formSubmit" type='submit' value='Create' >
+
+</form>
+</div>
+</div>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+	$('#formSubmit').click(function(e){
+		e.preventDefault();
+		var url = "{% url 'package' %}";
+		var data = $('#id_package').serialize();
+		fromSubmit(url, data);
+		console.log("hello");
+	});
+
+	var fromSubmit= function(url, data){
+		var formData = new FormData($('#id_package')[0]);
+		$.ajax({
+			type : "POST",
+			url : url,
+			dataType : "json",
+			data : formData,
+			success : function(data) {
+				$('.reply').html(data.msg);
+					$('#id_package')[0].reset();
+					console.log("hello1");
+					
+
+			},
+			cache: false,
+            contentType: false,
+            processData: false,
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				// console.log(XMLHttpRequest.responseText);
+			}
+		});
+  }
+</script>
+
